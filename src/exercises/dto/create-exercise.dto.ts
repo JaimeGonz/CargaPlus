@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateExerciseDto {
@@ -14,11 +14,11 @@ export class CreateExerciseDto {
 
   @IsString()
   @IsOptional()
-  @ApiProperty({ example: 'Barra' })
+  @ApiPropertyOptional({ example: 'Barra' })
   equipment?: string;
 
   @IsString()
   @IsOptional()
-  @ApiProperty({ example: 'Press con banca a 45 grados' })
+  @ApiPropertyOptional({ example: 'Press con banca a 45 grados' })
   description?: string;
 }

@@ -44,7 +44,7 @@ model Routine {
   name             String
   description      String?
   type             String? // torso-pierna, fullbody, etc
-  isActive         Boolean           @default(false)
+  isActive         Boolean           @default(true)
   userId           Int
   weeklyFrequency  Int?
   user             User              @relation(fields: [userId], references: [id])
