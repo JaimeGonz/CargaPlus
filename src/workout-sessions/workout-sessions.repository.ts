@@ -25,6 +25,7 @@ export class WorkoutSessionsRepository {
   async findOne(id: number, userId: number) {
     return this.prismaService.workoutSession.findFirst({
       where: { id, userId },
+      include: { workoutSets: true },
     });
   }
 

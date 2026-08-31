@@ -38,6 +38,11 @@ export class WorkoutSessionsController {
     return await this.workoutSessionsService.findAll(userId);
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string, @GetUser('userId') userId: number) {
+    return await this.workoutSessionsService.findOne(Number(id), userId);
+  }
+
   @Patch(':id')
   async update(
     @Body() finishWorkoutSessionDto: FinishWorkoutSessionDto,
