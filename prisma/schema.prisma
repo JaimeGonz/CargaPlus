@@ -64,7 +64,7 @@ model RoutineExercise {
   notes       String?
   rir         Int?
   restSeconds Int?
-  routine     Routine  @relation(fields: [routineId], references: [id])
+  routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
   exercise    Exercise @relation(fields: [exerciseId], references: [id])
 }
 

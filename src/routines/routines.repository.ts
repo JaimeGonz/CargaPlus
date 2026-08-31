@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoutineDto } from './dto/create-routine.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateRoutineDto } from './dto/update-routine.dto';
 
 @Injectable()
 export class RoutinesRepository {
@@ -31,6 +32,19 @@ export class RoutinesRepository {
   async findAll(userId: number) {
     return this.prismaService.routine.findMany({
       where: { userId },
+    });
+  }
+
+  async update(id: number, dto: UpdateRoutineDto) {
+    return this.prismaService.routine.update({
+      where: { id },
+      data: { ...dto },
+    });
+  }
+
+  async remove(id: number) {
+    return this.prismaService.routine.delete({
+      where: { id },
     });
   }
 }
