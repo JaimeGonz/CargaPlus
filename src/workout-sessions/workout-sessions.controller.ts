@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { WorkoutSessionsService } from './workout-sessions.service';
 import { CreateWorkoutSessionDto } from './dto/create-workout-session.dto';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
@@ -22,5 +22,10 @@ export class WorkoutSessionsController {
       createWorkoutSessionDto,
       userId,
     );
+  }
+
+  @Get()
+  async findAll(@GetUser('userId') userId: number) {
+    return await this.workoutSessionsService.findAll(userId);
   }
 }

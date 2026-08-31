@@ -14,4 +14,10 @@ export class WorkoutSessionsRepository {
       },
     });
   }
+
+  async findAll(userId: number) {
+    return this.prismaService.workoutSession.findMany({
+      where: { userId },
+    });
+  }
 }

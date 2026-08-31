@@ -11,4 +11,8 @@ export class WorkoutSessionsService {
   async create(dto: CreateWorkoutSessionDto, userId: number) {
     return this.workoutSessionsRepository.create(dto, userId);
   }
+
+  async findAll(userId: number) {
+    return this.workoutSessionsRepository.findAll(userId);
+  }
 }
