@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ExercisesModule } from './exercises/exercises.module';
 import { RoutinesModule } from './routines/routines.module';
+import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { RoutinesModule } from './routines/routines.module';
     AuthModule,
     ExercisesModule,
     RoutinesModule,
+    WorkoutSessionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
