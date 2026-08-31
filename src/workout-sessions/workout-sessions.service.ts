@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateWorkoutSessionDto } from './dto/create-workout-session.dto';
 import { WorkoutSessionsRepository } from './workout-sessions.repository';
 import { FinishWorkoutSessionDto } from './dto/finish-workout-session.dto';
@@ -25,6 +29,9 @@ export class WorkoutSessionsService {
     const session = await this.findOne(id, userId);
 
     if (!session) throw new NotFoundException('Session not found.');
+
+    if (session.isCompleted)
+      throw new BadRequestException('This session is already finished.');
 
     return this.workoutSessionsRepository.update(id, {
       ...dto,

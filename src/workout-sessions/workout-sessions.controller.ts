@@ -45,8 +45,8 @@ export class WorkoutSessionsController {
 
   @Patch(':id')
   async update(
-    @Body() finishWorkoutSessionDto: FinishWorkoutSessionDto,
     @Param('id') id: string,
+    @Body() finishWorkoutSessionDto: FinishWorkoutSessionDto,
     @GetUser('userId') userId: number,
   ) {
     return await this.workoutSessionsService.update(
