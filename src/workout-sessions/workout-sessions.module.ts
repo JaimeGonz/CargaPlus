@@ -8,5 +8,6 @@ import { PrismaModule } from 'src/prisma/prisma.module';
   imports: [PrismaModule],
   controllers: [WorkoutSessionsController],
   providers: [WorkoutSessionsService, WorkoutSessionsRepository],
+  exports: [WorkoutSessionsService],
 })
 export class WorkoutSessionsModule {}

@@ -87,7 +87,7 @@ model WorkoutSet {
   sessionId   Int
   exerciseId  Int
   order       Int
-  weight      Float?
+  weight      Float? //kilograms
   reps        Int
   rir         Int?
   isCompleted Boolean        @default(false)

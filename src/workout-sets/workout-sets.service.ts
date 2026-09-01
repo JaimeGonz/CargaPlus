@@ -1,0 +1,31 @@
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateWorkoutSetDto } from './dto/create-workout-set.dto';
+import { WorkoutSetsRepository } from './workout-sets.repository';
+import { WorkoutSessionsService } from 'src/workout-sessions/workout-sessions.service';
+
+@Injectable()
+export class WorkoutSetsService {
+  constructor(
+    private readonly workoutSetsRepository: WorkoutSetsRepository,
+    private readonly workoutSessionsService: WorkoutSessionsService,
+  ) {}
+
+  async create(sessionId: number, userId: number, dto: CreateWorkoutSetDto) {
+    const session = await this.workoutSessionsService.findOne(
+      sessionId,
+      userId,
+    );
+
+    if (!session) throw new NotFoundException('Workout session not found.');
+
+    if (session.isCompleted) {
+      throw new BadRequestException('Cannot add sets to a finished session.');
+    }
+
+    return this.workoutSetsRepository.create(sessionId, dto);
+  }
+}
