@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -56,6 +57,19 @@ export class WorkoutSetsController {
       Number(sessionId),
       userId,
       updateWorkoutSetDto,
+    );
+  }
+
+  @Delete(':sessionId/sets/:setId')
+  async remove(
+    @Param('sessionId') sessionId: string,
+    @Param('setId') setId: string,
+    @GetUser('userId') userId: number,
+  ) {
+    return this.workoutSetsService.remove(
+      Number(setId),
+      Number(sessionId),
+      userId,
     );
   }
 }

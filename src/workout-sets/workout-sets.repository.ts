@@ -36,4 +36,10 @@ export class WorkoutSetsRepository {
       data: { ...data },
     });
   }
+
+  async remove(id: number) {
+    return this.prisma.workoutSet.delete({
+      where: { id },
+    });
+  }
 }

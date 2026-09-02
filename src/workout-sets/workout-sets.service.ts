@@ -64,4 +64,23 @@ export class WorkoutSetsService {
 
     return this.workoutSetsRepository.update(id, dto);
   }
+
+  async remove(id: number, sessionId: number, userId: number) {
+    const session = await this.workoutSessionsService.findOne(
+      sessionId,
+      userId,
+    );
+
+    if (!session) throw new NotFoundException('Workout session not found.');
+
+    const set = await this.workoutSetsRepository.findOneBySession(
+      id,
+      sessionId,
+    );
+
+    if (!set)
+      throw new NotFoundException('Workout set not found in this session.');
+
+    return this.workoutSetsRepository.remove(id);
+  }
 }
