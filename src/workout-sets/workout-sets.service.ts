@@ -28,4 +28,15 @@ export class WorkoutSetsService {
 
     return this.workoutSetsRepository.create(sessionId, dto);
   }
+
+  async findAllBySession(sessionId: number, userId: number) {
+    const session = await this.workoutSessionsService.findOne(
+      sessionId,
+      userId,
+    );
+
+    if (!session) throw new NotFoundException('Workout session not found.');
+
+    return this.workoutSetsRepository.findAllBySession(sessionId);
+  }
 }

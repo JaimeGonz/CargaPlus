@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { CreateWorkoutSetDto } from './dto/create-workout-set.dto';
 import { WorkoutSetsService } from './workout-sets.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -21,6 +21,17 @@ export class WorkoutSetsController {
       Number(sessionId),
       userId,
       createWorkoutSetDto,
+    );
+  }
+
+  @Get(':sessionId/sets')
+  async findAllBySession(
+    @Param('sessionId') sessionId: string,
+    @GetUser('userId') userId: number,
+  ) {
+    return await this.workoutSetsService.findAllBySession(
+      Number(sessionId),
+      userId,
     );
   }
 }

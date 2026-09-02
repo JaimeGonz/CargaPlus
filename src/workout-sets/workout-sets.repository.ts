@@ -17,4 +17,11 @@ export class WorkoutSetsRepository {
       data: { ...dto, sessionId, order },
     });
   }
+
+  async findAllBySession(sessionId: number) {
+    return this.prisma.workoutSet.findMany({
+      where: { sessionId },
+      orderBy: { order: 'asc' },
+    });
+  }
 }
