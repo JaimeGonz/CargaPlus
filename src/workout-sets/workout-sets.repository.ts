@@ -1,6 +1,7 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateWorkoutSetDto } from './dto/create-workout-set.dto';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class WorkoutSetsRepository {
@@ -22,6 +23,17 @@ export class WorkoutSetsRepository {
     return this.prisma.workoutSet.findMany({
       where: { sessionId },
       orderBy: { order: 'asc' },
+    });
+  }
+
+  async findOneBySession(id: number, sessionId: number) {
+    return this.prisma.workoutSet.findFirst({ where: { id, sessionId } });
+  }
+
+  async update(id: number, data: Prisma.WorkoutSetUpdateInput) {
+    return this.prisma.workoutSet.update({
+      where: { id },
+      data: { ...data },
     });
   }
 }

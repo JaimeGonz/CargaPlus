@@ -6,6 +6,7 @@ import {
 import { CreateWorkoutSetDto } from './dto/create-workout-set.dto';
 import { WorkoutSetsRepository } from './workout-sets.repository';
 import { WorkoutSessionsService } from 'src/workout-sessions/workout-sessions.service';
+import { UpdateWorkoutSetDto } from './dto/update-workout-set.dto';
 
 @Injectable()
 export class WorkoutSetsService {
@@ -38,5 +39,29 @@ export class WorkoutSetsService {
     if (!session) throw new NotFoundException('Workout session not found.');
 
     return this.workoutSetsRepository.findAllBySession(sessionId);
+  }
+
+  async update(
+    id: number,
+    sessionId: number,
+    userId: number,
+    dto: UpdateWorkoutSetDto,
+  ) {
+    const session = await this.workoutSessionsService.findOne(
+      sessionId,
+      userId,
+    );
+
+    if (!session) throw new NotFoundException('Workout session not found.');
+
+    const set = await this.workoutSetsRepository.findOneBySession(
+      id,
+      sessionId,
+    );
+
+    if (!set)
+      throw new NotFoundException('Workout set not found in this session.');
+
+    return this.workoutSetsRepository.update(id, dto);
   }
 }
