@@ -37,6 +37,8 @@ model Exercise {
   createdAt        DateTime          @default(now())
   routineExercises RoutineExercise[]
   workoutSets      WorkoutSet[]
+
+  @@unique([name, userId])
 }
 
 model Routine {
