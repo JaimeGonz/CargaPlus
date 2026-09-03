@@ -13,6 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum SetType {
+  NORMAL
+  WARMUP
+  DROPSET
+  FAILURE
+  OTHER
+}
+
+enum ProgramStatus {
+  ACTIVE
+  AVAILABLE
+  ARCHIVED
+}
+
 model User {
   id              Int              @id @default(autoincrement())
   email           String           @unique
@@ -24,6 +38,7 @@ model User {
   createdAt       DateTime         @default(now())
   routines        Routine[]
   workoutSessions WorkoutSession[]
+  programs        Program[]
 }
 
 model Exercise {
@@ -41,18 +56,32 @@ model Exercise {
   @@unique([name, userId])
 }
 
+model Program {
+  id        Int           @id @default(autoincrement())
+  userId    Int
+  name      String
+  splitType String? // Full-body, upper-leg, etc
+  status    ProgramStatus @default(AVAILABLE)
+  startDate DateTime      @default(now())
+  endDate   DateTime?
+  createdAt DateTime      @default(now())
+  user      User          @relation(fields: [userId], references: [id])
+  routines  Routine[]
+}
+
 model Routine {
   id               Int               @id @default(autoincrement())
   name             String
   description      String?
-  type             String? // torso-pierna, fullbody, etc
-  isActive         Boolean           @default(true)
+  type             String?
+  dayOfWeek        Int?
   userId           Int
-  weeklyFrequency  Int?
   user             User              @relation(fields: [userId], references: [id])
   createdAt        DateTime          @default(now())
   routineExercises RoutineExercise[]
   workoutSessions  WorkoutSession[]
+  program          Program           @relation(fields: [programId], references: [id])
+  programId        Int
 }
 
 model RoutineExercise {
@@ -92,6 +121,7 @@ model WorkoutSet {
   weight      Float? //kilograms
   reps        Int
   rir         Int?
+  setType     SetType        @default(NORMAL)
   isCompleted Boolean        @default(false)
   notes       String?
   session     WorkoutSession @relation(fields: [sessionId], references: [id])

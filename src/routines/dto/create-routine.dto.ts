@@ -1,6 +1,6 @@
 import {
+  IsInt,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
@@ -20,15 +20,15 @@ export class CreateRoutineDto {
   @ApiPropertyOptional({ example: 'Rutina enfocada en fuerza para empuje' })
   description?: string;
 
+  @IsOptional()
+  @IsInt()
+  @ApiPropertyOptional({ example: 1, description: '1 = lunes ... 7 = domingo' })
+  dayOfWeek?: number;
+
   @IsString()
   @IsOptional()
   @ApiPropertyOptional({ example: 'Torso-pierna' })
   type?: string;
-
-  @IsNumber()
-  @IsOptional()
-  @ApiPropertyOptional({ example: 4 })
-  weeklyFrequency?: number;
 
   @ValidateNested({ each: true })
   @Type(() => CreateRoutineExerciseDto)

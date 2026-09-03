@@ -7,14 +7,19 @@ import { UpdateRoutineDto } from './dto/update-routine.dto';
 export class RoutinesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(createRoutineDto: CreateRoutineDto, userId: number) {
+  async create(
+    createRoutineDto: CreateRoutineDto,
+    userId: number,
+    programId: number,
+  ) {
     return await this.prismaService.routine.create({
       data: {
         name: createRoutineDto.name,
         description: createRoutineDto.description,
         type: createRoutineDto.type,
         userId,
-        weeklyFrequency: createRoutineDto.weeklyFrequency,
+        programId,
+        dayOfWeek: createRoutineDto.dayOfWeek,
         routineExercises: {
           create: createRoutineDto.routineExercises,
         },

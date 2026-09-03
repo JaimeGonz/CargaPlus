@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, ProgramStatus } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -171,23 +171,32 @@ async function main() {
     const exercise = await prisma.exercise.create({
       data: { ...ex },
     });
-
     exerciseMap.set(ex.name, exercise.id);
   }
 
-  console.log('ExerciseMap: ');
-  console.log(exerciseMap);
-
   console.log(`${exerciseMap.size} ejercicios creados.`);
 
-  // 3. Crear las 5 rutinas con sus ejercicios
+  // 3. Crear el Program que agrupa las 5 rutinas
+  const program = await prisma.program.create({
+    data: {
+      userId: user.id,
+      name: 'Upper/Lower Híbrido - Doble Progresión',
+      splitType: 'Upper/Lower Híbrido',
+      status: ProgramStatus.AVAILABLE,
+    },
+  });
+
+  console.log(`Program creado: ${program.name} (id: ${program.id})`);
+
+  // 4. Crear las 5 rutinas, cada una con su dayOfWeek (1 = lunes ... 7 = domingo)
 
   await prisma.routine.create({
     data: {
       userId: user.id,
+      programId: program.id,
       name: 'Upper A - Empuje dominante',
       type: 'Upper/Lower Híbrido',
-      weeklyFrequency: 5,
+      dayOfWeek: 1,
       routineExercises: {
         create: [
           {
@@ -250,9 +259,10 @@ async function main() {
   await prisma.routine.create({
     data: {
       userId: user.id,
+      programId: program.id,
       name: 'Lower A - Cuádriceps dominante',
       type: 'Upper/Lower Híbrido',
-      weeklyFrequency: 5,
+      dayOfWeek: 2,
       routineExercises: {
         create: [
           {
@@ -311,9 +321,10 @@ async function main() {
   await prisma.routine.create({
     data: {
       userId: user.id,
+      programId: program.id,
       name: 'Especialización - Hombros y Espalda Superior',
       type: 'Upper/Lower Híbrido',
-      weeklyFrequency: 5,
+      dayOfWeek: 3,
       routineExercises: {
         create: [
           {
@@ -364,9 +375,10 @@ async function main() {
   await prisma.routine.create({
     data: {
       userId: user.id,
+      programId: program.id,
       name: 'Upper B - Jalón dominante',
       type: 'Upper/Lower Híbrido',
-      weeklyFrequency: 5,
+      dayOfWeek: 5,
       routineExercises: {
         create: [
           {
@@ -433,9 +445,10 @@ async function main() {
   await prisma.routine.create({
     data: {
       userId: user.id,
+      programId: program.id,
       name: 'Lower B - Femoral y Glúteo dominante',
       type: 'Upper/Lower Híbrido',
-      weeklyFrequency: 5,
+      dayOfWeek: 6,
       routineExercises: {
         create: [
           {
@@ -491,7 +504,7 @@ async function main() {
     },
   });
 
-  console.log('5 rutinas creadas con sus ejercicios.');
+  console.log('5 rutinas creadas dentro del Program, con dayOfWeek asignado.');
 }
 
 main()

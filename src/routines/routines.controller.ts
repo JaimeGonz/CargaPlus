@@ -17,29 +17,34 @@ import { UpdateRoutineDto } from './dto/update-routine.dto';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller('routines')
+@Controller()
 export class RoutinesController {
   constructor(private readonly routinesService: RoutinesService) {}
 
-  @Post()
+  @Post('programs/:programId/routines')
   async create(
+    @Param('programId') programId: string,
     @Body() createRoutineDto: CreateRoutineDto,
     @GetUser('userId') userId: number,
   ) {
-    return await this.routinesService.create(createRoutineDto, userId);
+    return await this.routinesService.create(
+      createRoutineDto,
+      userId,
+      Number(programId),
+    );
   }
 
-  @Get()
+  @Get('routines')
   async findAll(@GetUser('userId') userId: number) {
     return await this.routinesService.findAll(userId);
   }
 
-  @Get(':id')
+  @Get('routines/:id')
   async findOne(@Param('id') id: string, @GetUser('userId') userId: number) {
     return await this.routinesService.findOne(Number(id), userId);
   }
 
-  @Patch(':id')
+  @Patch('routines/:id')
   async update(
     @Param('id') id: string,
     @GetUser('userId') userId: number,
@@ -52,7 +57,7 @@ export class RoutinesController {
     );
   }
 
-  @Delete(':id')
+  @Delete('routines/:id')
   async remove(@Param('id') id: string, @GetUser('userId') userId: number) {
     return await this.routinesService.remove(Number(id), userId);
   }
