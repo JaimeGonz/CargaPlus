@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { SplitType } from '@prisma/client';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateProgramDto {
   @IsString()
@@ -8,7 +9,7 @@ export class CreateProgramDto {
   name!: string;
 
   @IsOptional()
-  @IsString()
-  @ApiPropertyOptional({ example: 'Full-body' })
-  splitType?: string;
+  @IsEnum(SplitType)
+  @ApiPropertyOptional({ enum: SplitType, example: SplitType.HYBRID })
+  splitType?: SplitType;
 }

@@ -1,4 +1,9 @@
-import { PrismaClient, ProgramStatus } from '@prisma/client';
+import {
+  DayType,
+  PrismaClient,
+  ProgramStatus,
+  SplitType,
+} from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -181,7 +186,7 @@ async function main() {
     data: {
       userId: user.id,
       name: 'Upper/Lower Híbrido - Doble Progresión',
-      splitType: 'Upper/Lower Híbrido',
+      splitType: SplitType.HYBRID,
       status: ProgramStatus.AVAILABLE,
     },
   });
@@ -195,7 +200,7 @@ async function main() {
       userId: user.id,
       programId: program.id,
       name: 'Upper A - Empuje dominante',
-      type: 'Upper/Lower Híbrido',
+      type: DayType.UPPER,
       dayOfWeek: 1,
       routineExercises: {
         create: [
@@ -261,7 +266,7 @@ async function main() {
       userId: user.id,
       programId: program.id,
       name: 'Lower A - Cuádriceps dominante',
-      type: 'Upper/Lower Híbrido',
+      type: DayType.LOWER,
       dayOfWeek: 2,
       routineExercises: {
         create: [
@@ -323,7 +328,7 @@ async function main() {
       userId: user.id,
       programId: program.id,
       name: 'Especialización - Hombros y Espalda Superior',
-      type: 'Upper/Lower Híbrido',
+      type: DayType.SPECIALIZATION,
       dayOfWeek: 3,
       routineExercises: {
         create: [
@@ -377,7 +382,7 @@ async function main() {
       userId: user.id,
       programId: program.id,
       name: 'Upper B - Jalón dominante',
-      type: 'Upper/Lower Híbrido',
+      type: DayType.UPPER,
       dayOfWeek: 5,
       routineExercises: {
         create: [
@@ -447,7 +452,7 @@ async function main() {
       userId: user.id,
       programId: program.id,
       name: 'Lower B - Femoral y Glúteo dominante',
-      type: 'Upper/Lower Híbrido',
+      type: DayType.LOWER,
       dayOfWeek: 6,
       routineExercises: {
         create: [

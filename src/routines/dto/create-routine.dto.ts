@@ -1,4 +1,5 @@
 import {
+  IsEnum,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -8,6 +9,7 @@ import {
 import { CreateRoutineExerciseDto } from './create-routine-exercise.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { DayType } from '@prisma/client';
 
 export class CreateRoutineDto {
   @IsString()
@@ -25,10 +27,10 @@ export class CreateRoutineDto {
   @ApiPropertyOptional({ example: 1, description: '1 = lunes ... 7 = domingo' })
   dayOfWeek?: number;
 
-  @IsString()
+  @IsEnum(DayType)
   @IsOptional()
-  @ApiPropertyOptional({ example: 'Torso-pierna' })
-  type?: string;
+  @ApiPropertyOptional({ enum: DayType, example: DayType.PUSH })
+  type?: DayType;
 
   @ValidateNested({ each: true })
   @Type(() => CreateRoutineExerciseDto)

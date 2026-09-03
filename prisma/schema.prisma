@@ -27,6 +27,26 @@ enum ProgramStatus {
   ARCHIVED
 }
 
+enum SplitType {
+  FULL_BODY
+  UPPER_LOWER
+  PUSH_PULL_LEGS
+  BRO_SPLIT
+  HYBRID
+  OTHER
+}
+
+enum DayType {
+  PUSH
+  PULL
+  LEGS
+  UPPER
+  LOWER
+  FULL_BODY
+  SPECIALIZATION
+  OTHER
+}
+
 model User {
   id              Int              @id @default(autoincrement())
   email           String           @unique
@@ -60,7 +80,7 @@ model Program {
   id        Int           @id @default(autoincrement())
   userId    Int
   name      String
-  splitType String? // Full-body, upper-leg, etc
+  splitType SplitType?
   status    ProgramStatus @default(AVAILABLE)
   startDate DateTime      @default(now())
   endDate   DateTime?
@@ -73,7 +93,7 @@ model Routine {
   id               Int               @id @default(autoincrement())
   name             String
   description      String?
-  type             String?
+  type             DayType?
   dayOfWeek        Int?
   userId           Int
   user             User              @relation(fields: [userId], references: [id])
