@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -12,6 +13,7 @@ import { CreateProgramDto } from './dto/create-program.dto';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { ProgramsService } from './programs.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UpdateProgramDto } from './dto/update-program.dto';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -39,5 +41,18 @@ export class ProgramsController {
   @Get(':id')
   async findOne(@Param('id') id: string, @GetUser('userId') userId: number) {
     return await this.programsService.findOne(Number(id), userId);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateProgramDto: UpdateProgramDto,
+    @GetUser('userId') userId: number,
+  ) {
+    return await this.programsService.update(
+      Number(id),
+      userId,
+      updateProgramDto,
+    );
   }
 }

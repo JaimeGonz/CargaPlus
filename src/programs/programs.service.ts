@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProgramDto } from './dto/create-program.dto';
 import { ProgramsRepository } from './programs.repository';
+import { UpdateProgramDto } from './dto/update-program.dto';
 
 @Injectable()
 export class ProgramsService {
@@ -21,5 +22,14 @@ export class ProgramsService {
       throw new NotFoundException('Program not found for this user');
 
     return program;
+  }
+
+  async update(id: number, userId: number, dto: UpdateProgramDto) {
+    const program = await this.programsRepository.findOne(id, userId);
+
+    if (!program)
+      throw new NotFoundException('Program not found for this user');
+
+    return await this.programsRepository.update(id, dto);
   }
 }

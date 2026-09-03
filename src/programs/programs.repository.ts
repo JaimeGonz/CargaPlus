@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProgramDto } from './dto/create-program.dto';
 import { Program, ProgramStatus } from '@prisma/client';
+import { UpdateProgramDto } from './dto/update-program.dto';
 
 @Injectable()
 export class ProgramsRepository {
@@ -25,6 +26,13 @@ export class ProgramsRepository {
         userId,
         ...(includeArchived ? {} : { status: { not: ProgramStatus.ARCHIVED } }),
       },
+    });
+  }
+
+  async update(id: number, dto: UpdateProgramDto) {
+    return await this.prisma.program.update({
+      where: { id },
+      data: { ...dto },
     });
   }
 }
