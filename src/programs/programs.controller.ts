@@ -65,4 +65,9 @@ export class ProgramsController {
   async deactivate(@Param('id') id: string, @GetUser('userId') userId: number) {
     return this.programsService.deactivate(Number(id), userId);
   }
+
+  @Patch(':id/archive')
+  async archive(@Param('id') id: string, @GetUser('userId') userId: number) {
+    return this.programsService.archive(Number(id), userId);
+  }
 }
