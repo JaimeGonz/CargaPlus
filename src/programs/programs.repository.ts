@@ -35,4 +35,24 @@ export class ProgramsRepository {
       data: { ...dto },
     });
   }
+
+  async activate(id: number, userId: number): Promise<Program> {
+    return this.prisma.$transaction(async (tx) => {
+      const currentActive = await tx.program.findFirst({
+        where: { userId, status: ProgramStatus.ACTIVE },
+      });
+
+      if (currentActive && currentActive.id !== id) {
+        await tx.program.update({
+          where: { id: currentActive.id },
+          data: { status: ProgramStatus.AVAILABLE },
+        });
+      }
+
+      return tx.program.update({
+        where: { id },
+        data: { status: ProgramStatus.ACTIVE },
+      });
+    });
+  }
 }

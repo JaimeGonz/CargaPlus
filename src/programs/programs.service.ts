@@ -32,4 +32,11 @@ export class ProgramsService {
 
     return await this.programsRepository.update(id, dto);
   }
+
+  async activate(id: number, userId: number) {
+    const program = await this.programsRepository.findOne(id, userId);
+    if (!program) throw new NotFoundException('Program not found.');
+
+    return this.programsRepository.activate(id, userId);
+  }
 }

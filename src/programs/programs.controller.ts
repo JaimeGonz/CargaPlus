@@ -55,4 +55,9 @@ export class ProgramsController {
       updateProgramDto,
     );
   }
+
+  @Patch(':id/activate')
+  async activate(@Param('id') id: string, @GetUser('userId') userId: number) {
+    return this.programsService.activate(Number(id), userId);
+  }
 }
