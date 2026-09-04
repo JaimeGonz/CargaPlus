@@ -69,4 +69,11 @@ export class ProgramsRepository {
       data: { status: ProgramStatus.ARCHIVED, endDate: new Date() },
     });
   }
+
+  async unarchive(id: number): Promise<Program> {
+    return this.prisma.program.update({
+      where: { id },
+      data: { status: ProgramStatus.AVAILABLE, endDate: null },
+    });
+  }
 }

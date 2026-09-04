@@ -67,4 +67,15 @@ export class ProgramsService {
 
     return this.programsRepository.archive(id);
   }
+
+  async unarchive(id: number, userId: number) {
+    const program = await this.programsRepository.findOne(id, userId);
+    if (!program) throw new NotFoundException('Program not found.');
+
+    if (program.status !== ProgramStatus.ARCHIVED) {
+      throw new BadRequestException('This program cannot be unarchived.');
+    }
+
+    return this.programsRepository.unarchive(id);
+  }
 }

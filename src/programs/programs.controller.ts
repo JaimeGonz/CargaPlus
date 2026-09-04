@@ -70,4 +70,9 @@ export class ProgramsController {
   async archive(@Param('id') id: string, @GetUser('userId') userId: number) {
     return this.programsService.archive(Number(id), userId);
   }
+
+  @Patch(':id/unarchive')
+  async unarchive(@Param('id') id: string, @GetUser('userId') userId: number) {
+    return this.programsService.unarchive(Number(id), userId);
+  }
 }
