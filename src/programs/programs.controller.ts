@@ -60,4 +60,9 @@ export class ProgramsController {
   async activate(@Param('id') id: string, @GetUser('userId') userId: number) {
     return this.programsService.activate(Number(id), userId);
   }
+
+  @Patch(':id/deactivate')
+  async deactivate(@Param('id') id: string, @GetUser('userId') userId: number) {
+    return this.programsService.deactivate(Number(id), userId);
+  }
 }

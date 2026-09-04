@@ -55,4 +55,11 @@ export class ProgramsRepository {
       });
     });
   }
+
+  async deactivate(id: number): Promise<Program> {
+    return this.prisma.program.update({
+      where: { id },
+      data: { status: ProgramStatus.AVAILABLE },
+    });
+  }
 }
