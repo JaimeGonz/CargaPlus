@@ -100,7 +100,7 @@ model Routine {
   createdAt        DateTime          @default(now())
   routineExercises RoutineExercise[]
   workoutSessions  WorkoutSession[]
-  program          Program           @relation(fields: [programId], references: [id])
+  program          Program           @relation(fields: [programId], references: [id], onDelete: Cascade)
   programId        Int
 }
 

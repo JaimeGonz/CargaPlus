@@ -76,4 +76,10 @@ export class ProgramsRepository {
       data: { status: ProgramStatus.AVAILABLE, endDate: null },
     });
   }
+
+  async remove(id: number): Promise<Program> {
+    return this.prisma.program.delete({
+      where: { id },
+    });
+  }
 }

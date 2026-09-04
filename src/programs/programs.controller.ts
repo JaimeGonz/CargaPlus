@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -74,5 +75,10 @@ export class ProgramsController {
   @Patch(':id/unarchive')
   async unarchive(@Param('id') id: string, @GetUser('userId') userId: number) {
     return this.programsService.unarchive(Number(id), userId);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string, @GetUser('userId') userId: number) {
+    return this.programsService.remove(Number(id), userId);
   }
 }

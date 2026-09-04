@@ -78,4 +78,11 @@ export class ProgramsService {
 
     return this.programsRepository.unarchive(id);
   }
+
+  async remove(id: number, userId: number) {
+    const program = await this.programsRepository.findOne(id, userId);
+    if (!program) throw new NotFoundException('Program not found.');
+
+    return this.programsRepository.remove(id);
+  }
 }
