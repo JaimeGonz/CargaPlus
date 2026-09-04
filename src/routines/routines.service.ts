@@ -25,7 +25,9 @@ export class RoutinesService {
   }
 
   async findOne(id: number, userId: number) {
-    return this.routinesRepository.findOne(id, userId);
+    const routine = await this.routinesRepository.findOne(id, userId);
+    if (!routine) throw new NotFoundException('Routine not found.');
+    return routine;
   }
 
   async findAll(userId: number) {
