@@ -83,4 +83,11 @@ export class WorkoutSetsService {
 
     return this.workoutSetsRepository.remove(id);
   }
+
+  async findPreviousSessionSets(userId: number, exerciseId: number) {
+    return this.workoutSetsRepository.findPreviousSessionSets(
+      userId,
+      exerciseId,
+    );
+  }
 }

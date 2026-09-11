@@ -42,4 +42,26 @@ export class WorkoutSetsRepository {
       where: { id },
     });
   }
+
+  async findPreviousSessionSets(userId: number, exerciseId: number) {
+    const lastSet = await this.prisma.workoutSet.findFirst({
+      where: { exerciseId, session: { userId } },
+      orderBy: { session: { startTime: 'desc' } },
+      select: { sessionId: true },
+    });
+
+    if (!lastSet) return [];
+
+    return this.prisma.workoutSet.findMany({
+      where: { exerciseId, sessionId: lastSet.sessionId },
+      orderBy: { order: 'asc' },
+      select: {
+        order: true,
+        weight: true,
+        reps: true,
+        rir: true,
+        setType: true,
+      },
+    });
+  }
 }

@@ -6,11 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateWorkoutSetDto } from './dto/create-workout-set.dto';
 import { WorkoutSetsService } from './workout-sets.service';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { UpdateWorkoutSetDto } from './dto/update-workout-set.dto';
@@ -20,6 +21,22 @@ import { UpdateWorkoutSetDto } from './dto/update-workout-set.dto';
 @Controller('workout-sessions')
 export class WorkoutSetsController {
   constructor(private readonly workoutSetsService: WorkoutSetsService) {}
+
+  @Get('sets/previous')
+  @ApiOperation({
+    summary:
+      'Get all sets from the most recent session that included this exercise',
+  })
+  @ApiQuery({ name: 'exerciseId', required: true })
+  findPrevious(
+    @Query('exerciseId') exerciseId: string,
+    @GetUser('userId') userId: number,
+  ) {
+    return this.workoutSetsService.findPreviousSessionSets(
+      userId,
+      Number(exerciseId),
+    );
+  }
 
   @Post(':sessionId/sets')
   async create(
