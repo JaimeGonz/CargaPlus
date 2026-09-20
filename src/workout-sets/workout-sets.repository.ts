@@ -45,7 +45,7 @@ export class WorkoutSetsRepository {
 
   async findPreviousSessionSets(userId: number, exerciseId: number) {
     const lastSet = await this.prisma.workoutSet.findFirst({
-      where: { exerciseId, session: { userId } },
+      where: { exerciseId, session: { userId, isCompleted: true } },
       orderBy: { session: { startTime: 'desc' } },
       select: { sessionId: true },
     });
