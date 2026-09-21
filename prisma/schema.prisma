@@ -148,4 +148,5 @@ model WorkoutSet {
   exercise    Exercise       @relation(fields: [exerciseId], references: [id])
 
   @@index([exerciseId])
+  @@unique([sessionId, exerciseId,order])
 }

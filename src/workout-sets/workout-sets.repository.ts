@@ -1,22 +1,50 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateWorkoutSetDto } from './dto/create-workout-set.dto';
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, WorkoutSet } from '@prisma/client';
 
 @Injectable()
 export class WorkoutSetsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(sessionId: number, dto: CreateWorkoutSetDto) {
+  // async create(sessionId: number, dto: CreateWorkoutSetDto) {
+  //   const existingSetsCount = await this.prisma.workoutSet.count({
+  //     where: { sessionId, exerciseId: dto.exerciseId },
+  //   });
+
+  //   const order = existingSetsCount + 1;
+
+  //   return this.prisma.workoutSet.create({
+  //     data: { ...dto, sessionId, order },
+  //   });
+  // }
+
+  async create(
+    sessionId: number,
+    dto: CreateWorkoutSetDto,
+    attempt = 0,
+  ): Promise<WorkoutSet> {
     const existingSetsCount = await this.prisma.workoutSet.count({
-      where: { sessionId },
+      where: { sessionId, exerciseId: dto.exerciseId },
     });
 
     const order = existingSetsCount + 1;
 
-    return this.prisma.workoutSet.create({
-      data: { ...dto, sessionId, order },
-    });
+    try {
+      return await this.prisma.workoutSet.create({
+        data: { ...dto, sessionId, order },
+      });
+    } catch (e) {
+      // Si petición entra con el mismo "order" — reintenta con el conteo actualizado
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === 'P2002' &&
+        attempt < 3
+      ) {
+        return this.create(sessionId, dto, attempt + 1);
+      }
+      throw e;
+    }
   }
 
   async findAllBySession(sessionId: number) {
