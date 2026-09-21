@@ -54,6 +54,10 @@ export class WorkoutSetsService {
 
     if (!session) throw new NotFoundException('Workout session not found.');
 
+    if (session.isCompleted) {
+      throw new BadRequestException('Cannot edit sets in a finished session.');
+    }
+
     const set = await this.workoutSetsRepository.findOneBySession(
       id,
       sessionId,
