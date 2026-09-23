@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { SetType } from '@prisma/client';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateWorkoutSetDto {
   @IsNumber()
@@ -19,6 +20,11 @@ export class CreateWorkoutSetDto {
   @IsNumber()
   @ApiPropertyOptional({ example: 1 })
   rir?: number;
+
+  @IsOptional()
+  @IsEnum(SetType)
+  @ApiPropertyOptional({ enum: SetType, example: SetType.WARMUP })
+  setType?: SetType;
 
   @IsOptional()
   @IsString()
